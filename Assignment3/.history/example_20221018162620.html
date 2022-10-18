@@ -1,0 +1,28 @@
+<html>
+    <head>
+        <title>
+            {{.Title}}
+        </title>
+        <style>
+            body{
+                background-color:LightGray;
+            }
+            h1{
+                background-color:gray;
+            }
+        </style>
+        <meta http-equiv="refresh" content="3" >
+    </head>
+    <body>
+        <h1>Auto Reload Water and Wind Value</h1>
+        <div>
+            <h2>Water : {{.Status.Water}} m</h2>
+            <h2>Water status : {{.Status.WaterStatus}}</h2>
+        </div>
+
+        <div>
+            <h2>Wind level : {{.Status.Wind}}</h2>
+            <h2>Wind status : {{.Status.WindStatus}} m/s</h2>
+        </div>
+    </body>
+</html>
