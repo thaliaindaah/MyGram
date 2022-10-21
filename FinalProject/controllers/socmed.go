@@ -10,20 +10,20 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func CreatePhoto(c *gin.Context) {
+func CreateSocmed(c *gin.Context) {
 	userData := c.MustGet("userData").(jwt.MapClaims)
 	contentType := helpers.GetContentType(c)
-	var Photo models.Photo
+	var Socmed models.SocialMedia
 	id := int(userData["id"].(float64))
 
 	if contentType == appJSON {
-		c.ShouldBindJSON(&Photo)
+		c.ShouldBindJSON(&Socmed)
 	} else {
-		c.ShouldBind(&Photo)
+		c.ShouldBind(&Socmed)
 	}
 
-	Photo.UserID = id
-	err := models.CreatePhoto(&Photo)
+	Socmed.UserID = id
+	err := models.CreateSocmed(&Socmed)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error":   "Bad Request",
@@ -33,27 +33,25 @@ func CreatePhoto(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusCreated, gin.H{
-		"id":         Photo.ID,
-		"title":      Photo.Title,
-		"caption":    Photo.Caption,
-		"photo_url":  Photo.PhotoURL,
-		"user_id":    Photo.UserID,
-		"created_at": Photo.CreatedAt,
+		"id":               Socmed.ID,
+		"name":             Socmed.Name,
+		"social_media_url": Socmed.URL,
+		"user_id":          Socmed.UserID,
 	})
 }
 
-func GetPhoto(c *gin.Context) {
-	var Photo models.Photo
+func GetSocmed(c *gin.Context) {
+	var Socmed models.SocialMedia
 	userData := c.MustGet("userData").(jwt.MapClaims)
 	contentType := helpers.GetContentType(c)
 	id := int(userData["id"].(float64))
 	if contentType == appJSON {
-		c.ShouldBindJSON(&Photo)
+		c.ShouldBindJSON(&Socmed)
 	} else {
-		c.ShouldBind(&Photo)
+		c.ShouldBind(&Socmed)
 	}
-	Photo.UserID = id
-	temp, err := models.GetPhoto()
+	Socmed.UserID = id
+	temp, err := models.GetSocmed()
 	if err != nil {
 		c.AbortWithStatus(http.StatusNotFound)
 	}
@@ -65,52 +63,51 @@ func GetPhoto(c *gin.Context) {
 	}
 }
 
-func UpdatePhoto(c *gin.Context) {
+func UpdateSocmed(c *gin.Context) {
 	contentType := helpers.GetContentType(c)
-	var Photo models.Photo
-	photoId, _ := strconv.Atoi(c.Param("id"))
+	var Socmed models.SocialMedia
+	commentId, _ := strconv.Atoi(c.Param("id"))
 
 	if contentType == appJSON {
-		c.ShouldBindJSON(&Photo)
+		c.ShouldBindJSON(&Socmed)
 	} else {
-		c.ShouldBind(&Photo)
+		c.ShouldBind(&Socmed)
 	}
 
-	Photo.ID = photoId
+	Socmed.ID = commentId
 
-	err := models.UpdatePhoto(&Photo, photoId)
+	err := models.UpdateSocmed(&Socmed, commentId)
 	if err != nil {
 		c.AbortWithStatus(http.StatusNotFound)
 		return
 	}
 
-	user, err := models.GetPhotoById(Photo, photoId)
+	user, err := models.GetSocmedbyId(Socmed, commentId)
 	if err != nil {
 		c.AbortWithStatus(http.StatusNotFound)
 		return
 	}
 	c.JSON(http.StatusOK, user)
-
 }
 
-func DeletePhoto(c *gin.Context) {
+func DeleteSocmed(c *gin.Context) {
 	contentType := helpers.GetContentType(c)
-	var Photo models.Photo
-	photoId, _ := strconv.Atoi(c.Param("id"))
+	var Socmed models.SocialMedia
+	id, _ := strconv.Atoi(c.Param("id"))
 
 	if contentType == appJSON {
-		c.ShouldBindJSON(&Photo)
+		c.ShouldBindJSON(&Socmed)
 	} else {
-		c.ShouldBind(&Photo)
+		c.ShouldBind(&Socmed)
 	}
-	Photo.ID = photoId
+	Socmed.ID = id
 
-	err := models.DeletePhoto(&Photo, photoId)
+	err := models.DeleteSocmed(&Socmed, id)
 	if err != nil {
 		c.AbortWithStatus(http.StatusNotFound)
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
-		"message": "your photo has been successfully deleted",
+		"message": "your social media has been successfully deleted",
 	})
 }

@@ -10,20 +10,20 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func CreatePhoto(c *gin.Context) {
+func CreateComment(c *gin.Context) {
 	userData := c.MustGet("userData").(jwt.MapClaims)
 	contentType := helpers.GetContentType(c)
-	var Photo models.Photo
+	var Comment models.Comment
 	id := int(userData["id"].(float64))
 
 	if contentType == appJSON {
-		c.ShouldBindJSON(&Photo)
+		c.ShouldBindJSON(&Comment)
 	} else {
-		c.ShouldBind(&Photo)
+		c.ShouldBind(&Comment)
 	}
 
-	Photo.UserID = id
-	err := models.CreatePhoto(&Photo)
+	Comment.UserID = id
+	err := models.CreateComment(&Comment)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error":   "Bad Request",
@@ -33,27 +33,26 @@ func CreatePhoto(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusCreated, gin.H{
-		"id":         Photo.ID,
-		"title":      Photo.Title,
-		"caption":    Photo.Caption,
-		"photo_url":  Photo.PhotoURL,
-		"user_id":    Photo.UserID,
-		"created_at": Photo.CreatedAt,
+		"id":         Comment.ID,
+		"message":    Comment.Message,
+		"photo_id":   Comment.PhotoID,
+		"user_id":    Comment.UserID,
+		"created_at": Comment.CreatedAt,
 	})
 }
 
-func GetPhoto(c *gin.Context) {
-	var Photo models.Photo
+func GetComment(c *gin.Context) {
+	var Comment models.Comment
 	userData := c.MustGet("userData").(jwt.MapClaims)
 	contentType := helpers.GetContentType(c)
 	id := int(userData["id"].(float64))
 	if contentType == appJSON {
-		c.ShouldBindJSON(&Photo)
+		c.ShouldBindJSON(&Comment)
 	} else {
-		c.ShouldBind(&Photo)
+		c.ShouldBind(&Comment)
 	}
-	Photo.UserID = id
-	temp, err := models.GetPhoto()
+	Comment.UserID = id
+	temp, err := models.GetComment()
 	if err != nil {
 		c.AbortWithStatus(http.StatusNotFound)
 	}
@@ -65,52 +64,51 @@ func GetPhoto(c *gin.Context) {
 	}
 }
 
-func UpdatePhoto(c *gin.Context) {
+func UpdateComment(c *gin.Context) {
 	contentType := helpers.GetContentType(c)
-	var Photo models.Photo
-	photoId, _ := strconv.Atoi(c.Param("id"))
+	var Comment models.Comment
+	commentId, _ := strconv.Atoi(c.Param("id"))
 
 	if contentType == appJSON {
-		c.ShouldBindJSON(&Photo)
+		c.ShouldBindJSON(&Comment)
 	} else {
-		c.ShouldBind(&Photo)
+		c.ShouldBind(&Comment)
 	}
 
-	Photo.ID = photoId
+	Comment.ID = commentId
 
-	err := models.UpdatePhoto(&Photo, photoId)
+	err := models.UpdateComment(&Comment, commentId)
 	if err != nil {
 		c.AbortWithStatus(http.StatusNotFound)
 		return
 	}
 
-	user, err := models.GetPhotoById(Photo, photoId)
+	user, err := models.GetCommentById(Comment, commentId)
 	if err != nil {
 		c.AbortWithStatus(http.StatusNotFound)
 		return
 	}
 	c.JSON(http.StatusOK, user)
-
 }
 
-func DeletePhoto(c *gin.Context) {
+func DeleteComment(c *gin.Context) {
 	contentType := helpers.GetContentType(c)
-	var Photo models.Photo
-	photoId, _ := strconv.Atoi(c.Param("id"))
+	var Comment models.Comment
+	id, _ := strconv.Atoi(c.Param("id"))
 
 	if contentType == appJSON {
-		c.ShouldBindJSON(&Photo)
+		c.ShouldBindJSON(&Comment)
 	} else {
-		c.ShouldBind(&Photo)
+		c.ShouldBind(&Comment)
 	}
-	Photo.ID = photoId
+	Comment.ID = id
 
-	err := models.DeletePhoto(&Photo, photoId)
+	err := models.DeleteComment(&Comment, id)
 	if err != nil {
 		c.AbortWithStatus(http.StatusNotFound)
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
-		"message": "your photo has been successfully deleted",
+		"message": "your comment has been successfully deleted",
 	})
 }
