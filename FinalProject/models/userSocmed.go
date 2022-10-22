@@ -26,6 +26,11 @@ func UpdateSocmed(out *SocialMedia, id interface{}) (err error) {
 }
 
 func DeleteSocmed(socmed *SocialMedia, id int) (err error) {
+	err = database.DB.Table("SocialMedia").Where("user_id = ?", id).Delete(nil).Error
+	return nil
+}
+
+func DeleteSocmedByID(socmed *SocialMedia, id int) (err error) {
 	err = database.DB.Table("SocialMedia").Where("id = ?", id).Delete(nil).Error
 	return nil
 }

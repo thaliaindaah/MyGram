@@ -36,11 +36,9 @@ func Authorization() gin.HandlerFunc {
 		Updated := models.User{}
 
 		temp := models.User{
-			ID:        id,
-			Password:  Updated.Password,
-			CreatedAt: Updated.CreatedAt,
-			UpdatedAt: Updated.UpdatedAt,
-			Age:       Updated.Age,
+			ID:       id,
+			Username: Updated.Username,
+			Email:    Updated.Email,
 		}
 
 		_, err := models.GetUserById(temp, userId)
@@ -55,34 +53,75 @@ func Authorization() gin.HandlerFunc {
 	}
 }
 
-// func PhotoAuthorization() gin.HandlerFunc {
-// 	return func(ctx *gin.Context) {
-// 		id, _ := strconv.Atoi(ctx.Param("id"))
-// 		userData := ctx.MustGet("userData").(jwt.MapClaims)
-// 		userId := int(userData["id"].(float64))
-// 		Updated := models.Photo{}
+func PhotoAuthorization() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		id, _ := strconv.Atoi(ctx.Param("id"))
+		fmt.Println("id", id)
+		userData := ctx.MustGet("userData").(jwt.MapClaims)
+		userId := int(userData["id"].(float64))
+		var Updated models.Photo
 
-// 		temp := models.Photo{
-// 			ID:        id,
-// 			CreatedAt: Updated.CreatedAt,
-// 			UpdatedAt: Updated.UpdatedAt,
-// 			PhotoURL:  Updated.PhotoURL,
-// 			Caption:   Updated.Caption,
-// 			Title:     Updated.Title,
-// 			UserID:    Updated.UserID,
-// 		}
+		temp := models.Photo{
+			ID:       id,
+			Title:    Updated.Title,
+			Caption:  Updated.Caption,
+			PhotoURL: Updated.PhotoURL,
+			UserID:   userId,
+		}
+		fmt.Println("temp models", temp)
+		_, err := models.GetPhotoById(temp, id)
+		if err != nil {
+			ctx.AbortWithStatusJSON(http.StatusNotFound, gin.H{
+				"error":   "Data Not Found",
+				"message": "Data doesn't exist",
+			})
+		}
+		ctx.Next()
+	}
+}
 
-// 		_, err := models.GetPhotoById(temp, id)
-// 		fmt.Println(err)
-// 		fmt.Println(temp.UserID)
+func CommentAuthorization() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		id, _ := strconv.Atoi(ctx.Param("id"))
+		fmt.Println("id", id)
+		userData := ctx.MustGet("userData").(jwt.MapClaims)
+		userId := int(userData["id"].(float64))
 
-// 		if temp.UserID != userId {
-// 			ctx.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
-// 				"error":   "unauthorized",
-// 				"message": "you are not allowed to access this data",
-// 			})
-// 			return
-// 		}
-// 		ctx.Next()
-// 	}
-// }
+		temp := models.Comment{
+			ID:     id,
+			UserID: userId,
+		}
+		fmt.Println("temp models", temp)
+		_, err := models.GetCommentById(temp, id)
+		if err != nil {
+			ctx.AbortWithStatusJSON(http.StatusNotFound, gin.H{
+				"error":   "Data Not Found",
+				"message": "Data doesn't exist",
+			})
+		}
+		ctx.Next()
+	}
+}
+
+func SocmedAuthorization() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		id, _ := strconv.Atoi(ctx.Param("id"))
+		fmt.Println("id", id)
+		userData := ctx.MustGet("userData").(jwt.MapClaims)
+		userId := int(userData["id"].(float64))
+
+		temp := models.SocialMedia{
+			ID:     id,
+			UserID: userId,
+		}
+		fmt.Println("temp models", temp)
+		_, err := models.GetSocmedbyId(temp, id)
+		if err != nil {
+			ctx.AbortWithStatusJSON(http.StatusNotFound, gin.H{
+				"error":   "Data Not Found",
+				"message": "Data doesn't exist",
+			})
+		}
+		ctx.Next()
+	}
+}

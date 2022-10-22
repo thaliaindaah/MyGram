@@ -67,7 +67,9 @@ func GetPhoto(c *gin.Context) {
 
 func UpdatePhoto(c *gin.Context) {
 	contentType := helpers.GetContentType(c)
+	userData := c.MustGet("userData").(jwt.MapClaims)
 	var Photo models.Photo
+	id := int(userData["id"].(float64))
 	photoId, _ := strconv.Atoi(c.Param("id"))
 
 	if contentType == appJSON {
@@ -76,7 +78,7 @@ func UpdatePhoto(c *gin.Context) {
 		c.ShouldBind(&Photo)
 	}
 
-	Photo.ID = photoId
+	Photo.UserID = id
 
 	err := models.UpdatePhoto(&Photo, photoId)
 	if err != nil {
@@ -95,7 +97,10 @@ func UpdatePhoto(c *gin.Context) {
 
 func DeletePhoto(c *gin.Context) {
 	contentType := helpers.GetContentType(c)
+	userData := c.MustGet("userData").(jwt.MapClaims)
 	var Photo models.Photo
+	var Comment models.Comment
+	id := int(userData["id"].(float64))
 	photoId, _ := strconv.Atoi(c.Param("id"))
 
 	if contentType == appJSON {
@@ -103,9 +108,15 @@ func DeletePhoto(c *gin.Context) {
 	} else {
 		c.ShouldBind(&Photo)
 	}
-	Photo.ID = photoId
 
-	err := models.DeletePhoto(&Photo, photoId)
+	Photo.UserID = id
+
+	err := models.DeleteComment(&Comment, photoId)
+	if err != nil {
+		c.AbortWithStatus(http.StatusNotFound)
+	}
+
+	err = models.DeletePhotoByID(&Photo, photoId)
 	if err != nil {
 		c.AbortWithStatus(http.StatusNotFound)
 		return

@@ -20,7 +20,8 @@ func GetPhoto() (out []Photo, err error) {
 func GetPhotoById(photo Photo, id int) (out Photo, err error) {
 	err = database.DB.Table("Photo").Where("id = ?", id).First(&photo).Error
 	out = photo
-	fmt.Println("NAS", out)
+	fmt.Println("Photo", photo)
+	fmt.Println("Out", out)
 	return
 }
 
@@ -30,6 +31,11 @@ func UpdatePhoto(out *Photo, id interface{}) (err error) {
 }
 
 func DeletePhoto(photo *Photo, id int) (err error) {
+	err = database.DB.Table("Photo").Where("user_id = ?", id).Delete(nil).Error
+	return nil
+}
+
+func DeletePhotoByID(photo *Photo, id int) (err error) {
 	err = database.DB.Table("Photo").Where("id = ?", id).Delete(nil).Error
 	return nil
 }

@@ -103,7 +103,7 @@ func DeleteComment(c *gin.Context) {
 	}
 	Comment.ID = id
 
-	err := models.DeleteComment(&Comment, id)
+	err := models.DeleteCommentById(&Comment, id)
 	if err != nil {
 		c.AbortWithStatus(http.StatusNotFound)
 		return

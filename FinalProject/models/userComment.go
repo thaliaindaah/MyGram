@@ -28,6 +28,16 @@ func UpdateComment(out *Comment, id interface{}) (err error) {
 }
 
 func DeleteComment(comment *Comment, id int) (err error) {
+	err = database.DB.Table("Comment").Where("photo_id = ?", id).Delete(nil).Error
+	return nil
+}
+
+func DeleteCommentUserId(comment *Comment, id int) (err error) {
+	err = database.DB.Table("Comment").Where("user_id = ?", id).Delete(nil).Error
+	return nil
+}
+
+func DeleteCommentById(comment *Comment, id int) (err error) {
 	err = database.DB.Table("Comment").Where("id = ?", id).Delete(nil).Error
 	return nil
 }

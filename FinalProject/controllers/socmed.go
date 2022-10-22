@@ -102,7 +102,7 @@ func DeleteSocmed(c *gin.Context) {
 	}
 	Socmed.ID = id
 
-	err := models.DeleteSocmed(&Socmed, id)
+	err := models.DeleteSocmedByID(&Socmed, id)
 	if err != nil {
 		c.AbortWithStatus(http.StatusNotFound)
 		return

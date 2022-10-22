@@ -5,6 +5,7 @@ import (
 	"FinalProject/models"
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
@@ -117,7 +118,11 @@ func DeleteUser(c *gin.Context) {
 	userData := c.MustGet("userData").(jwt.MapClaims)
 	contentType := helpers.GetContentType(c)
 	var User models.User
+	var Photo models.Photo
+	var Socmed models.SocialMedia
+	var Comment models.Comment
 	id := int(userData["id"].(float64))
+	userId, _ := strconv.Atoi(c.Param("id"))
 
 	if contentType == appJSON {
 		c.ShouldBindJSON(&User)
@@ -125,7 +130,24 @@ func DeleteUser(c *gin.Context) {
 		c.ShouldBind(&User)
 	}
 
-	err := models.DeleteUser(&User, id)
+	User.ID = id
+
+	err := models.DeleteSocmed(&Socmed, userId)
+	if err != nil {
+		c.AbortWithStatus(http.StatusNotFound)
+	}
+
+	err = models.DeleteCommentUserId(&Comment, userId)
+	if err != nil {
+		c.AbortWithStatus(http.StatusNotFound)
+	}
+
+	err = models.DeletePhoto(&Photo, userId)
+	if err != nil {
+		c.AbortWithStatus(http.StatusNotFound)
+	}
+
+	err = models.DeleteUser(&User, userId)
 	if err != nil {
 		c.AbortWithStatus(http.StatusNotFound)
 		return
