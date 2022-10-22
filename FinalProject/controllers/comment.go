@@ -97,7 +97,14 @@ func UpdateComment(c *gin.Context) {
 		c.AbortWithStatus(http.StatusNotFound)
 		return
 	}
-	c.JSON(http.StatusOK, user)
+	c.JSON(http.StatusOK, gin.H{
+		"id":         user.ID,
+		"created_at": user.CreatedAt,
+		"updated_at": user.UpdatedAt,
+		"message":    user.Message,
+		"user_id":    user.UserID,
+		"photo_id":   user.PhotoID,
+	})
 }
 
 func DeleteComment(c *gin.Context) {

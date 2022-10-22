@@ -5,6 +5,7 @@ import (
 	"FinalProject/models"
 	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
@@ -95,7 +96,13 @@ func UpdateSocmed(c *gin.Context) {
 		c.AbortWithStatus(http.StatusNotFound)
 		return
 	}
-	c.JSON(http.StatusOK, user)
+	c.JSON(http.StatusOK, gin.H{
+		"id":               user.ID,
+		"name":             user.Name,
+		"social_media_url": user.URL,
+		"user_id":          user.UserID,
+		"updated_at":       time.Now().Format("2006-01-02 15:04:05"),
+	})
 }
 
 func DeleteSocmed(c *gin.Context) {
