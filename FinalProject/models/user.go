@@ -12,7 +12,7 @@ type User struct {
 	ID        int        `gorm:"primaryKey" json:"id"`
 	CreatedAt *time.Time `json:"created_at,omitempty"`
 	UpdatedAt *time.Time `json:"updated_at,omitempty"`
-	Email     string     `gorm:"not null,unique_index:email" json:"email" form:"email" validate:"required"`
+	Email     string     `gorm:"not null,uniqueIndex:email" json:"email" form:"email" validate:"required"`
 	Username  string     `gorm:"not null,unique_index:username" json:"username" form:"username" validate:"required"`
 	Password  string     `gorm:"not null" json:"password" form:"password" validate:"required,min=6"`
 	Age       int        `gorm:"not null;uniqueIndex" json:"age" form:"age" validate:"required,gte=8"`
