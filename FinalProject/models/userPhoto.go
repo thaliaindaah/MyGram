@@ -25,6 +25,11 @@ func GetPhotoById(photo Photo, id int) (out Photo, err error) {
 	return
 }
 
+func GetItemPhotoByID(id int) (out []Photo, err error) {
+	err = database.DB.Table("Photo").Where("user_id = ?", id).Scan(&out).Error
+	return
+}
+
 func UpdatePhoto(out *Photo, id interface{}) (err error) {
 	err = database.DB.Table("Photo").Where("id = ?", id).Update(&out).Error
 	return err

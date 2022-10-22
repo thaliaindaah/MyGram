@@ -10,6 +10,7 @@ type SocialMedia struct {
 	Name   string `gorm:"column:name" json:"name" form:"name" validate:"required"`
 	URL    string `gorm:"column:social_media_url" json:"social_media_url" form:"social_media_url" validate:"required"`
 	UserID int    `gorm:"column:user_id" json:"user_id"`
+	User   []User `json:"Users"`
 }
 
 func (SocialMedia) TableName() string {

@@ -24,6 +24,11 @@ func GetUserById(user User, id int) (out User, err error) {
 	return
 }
 
+func GetItemByID(id int) (out []User, err error) {
+	err = database.DB.Table("Users").Where("id = ?", id).Scan(&out).Error
+	return
+}
+
 func UpdateUser(user *User, id interface{}) (err error) {
 	err = database.DB.Table("Users").Where("id = ?", id).Update(&user).Error
 	return err

@@ -53,6 +53,15 @@ func GetComment(c *gin.Context) {
 	}
 	Comment.UserID = id
 	temp, err := models.GetComment()
+	for i, v := range temp {
+		item, _ := models.GetItemByID(v.UserID)
+		photoItem, err := models.GetItemPhotoByID(v.UserID)
+		if err != nil {
+			c.AbortWithStatus(http.StatusNotFound)
+		}
+		temp[i].User = item
+		temp[i].Photo = photoItem
+	}
 	if err != nil {
 		c.AbortWithStatus(http.StatusNotFound)
 	}

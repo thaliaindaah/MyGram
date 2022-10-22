@@ -54,6 +54,14 @@ func GetPhoto(c *gin.Context) {
 	}
 	Photo.UserID = id
 	temp, err := models.GetPhoto()
+	for i, v := range temp {
+		item, err := models.GetItemByID(v.UserID)
+		if err != nil {
+			c.AbortWithStatus(http.StatusNotFound)
+		}
+		temp[i].User = item
+	}
+
 	if err != nil {
 		c.AbortWithStatus(http.StatusNotFound)
 	}

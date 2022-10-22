@@ -15,6 +15,7 @@ type Photo struct {
 	PhotoURL  string     `gorm:"column:photo_url" json:"photo_url" form:"photo_url" validate:"required"`
 	Caption   string     `gorm:"column:caption" json:"caption" form:"caption" validate:"required"`
 	UserID    int        `gorm:"column:user_id" json:"user_id"`
+	User      []User     `json:"Users"`
 }
 
 func (Photo) TableName() string {

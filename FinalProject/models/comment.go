@@ -14,6 +14,8 @@ type Comment struct {
 	Message   string     `gorm:"column:message" json:"message" form:"message" validate:"required"`
 	UserID    int        `gorm:"column:user_id" json:"user_id"`
 	PhotoID   int        `gorm:"column:photo_id" json:"photo_id"`
+	User      []User     `json:"Users"`
+	Photo     []Photo    `json:"Photo"`
 }
 
 func (Comment) TableName() string {
