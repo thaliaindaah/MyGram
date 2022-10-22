@@ -17,7 +17,7 @@ func main() {
 		fmt.Println("Status:", err)
 	}
 	defer database.DB.Close()
-	database.DB.AutoMigrate(&models.User{})
+	database.DB.AutoMigrate(&models.User{}, &models.Photo{}, &models.Comment{}, &models.SocialMedia{})
 	r := router.StartApp()
 	r.Run()
 }
