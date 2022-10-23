@@ -51,8 +51,8 @@ func GetSocmed(c *gin.Context) {
 	} else {
 		c.ShouldBind(&Socmed)
 	}
-	Socmed.UserID = id
-	temp, err := models.GetSocmed()
+
+	temp, err := models.GetSocmed(id)
 	for i, v := range temp {
 		item, err := models.GetItemByID(v.UserID)
 		if err != nil {

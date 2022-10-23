@@ -5,7 +5,6 @@ import (
 	"FinalProject/models"
 	"fmt"
 	"net/http"
-	"strconv"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
@@ -122,7 +121,6 @@ func DeleteUser(c *gin.Context) {
 	var Socmed models.SocialMedia
 	var Comment models.Comment
 	id := int(userData["id"].(float64))
-	userId, _ := strconv.Atoi(c.Param("id"))
 
 	if contentType == appJSON {
 		c.ShouldBindJSON(&User)
@@ -132,22 +130,22 @@ func DeleteUser(c *gin.Context) {
 
 	User.ID = id
 
-	err := models.DeleteSocmed(&Socmed, userId)
+	err := models.DeleteSocmed(&Socmed, id)
 	if err != nil {
 		c.AbortWithStatus(http.StatusNotFound)
 	}
 
-	err = models.DeleteCommentUserId(&Comment, userId)
+	err = models.DeleteCommentUserId(&Comment, id)
 	if err != nil {
 		c.AbortWithStatus(http.StatusNotFound)
 	}
 
-	err = models.DeletePhoto(&Photo, userId)
+	err = models.DeletePhoto(&Photo, id)
 	if err != nil {
 		c.AbortWithStatus(http.StatusNotFound)
 	}
 
-	err = models.DeleteUser(&User, userId)
+	err = models.DeleteUser(&User, id)
 	if err != nil {
 		c.AbortWithStatus(http.StatusNotFound)
 		return

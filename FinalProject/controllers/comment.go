@@ -52,7 +52,7 @@ func GetComment(c *gin.Context) {
 		c.ShouldBind(&Comment)
 	}
 	Comment.UserID = id
-	temp, err := models.GetComment()
+	temp, err := models.GetComment(id)
 	for i, v := range temp {
 		item, _ := models.GetItemByID(v.UserID)
 		photoItem, err := models.GetItemPhotoByID(v.UserID)

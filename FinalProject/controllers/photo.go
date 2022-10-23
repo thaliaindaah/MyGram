@@ -53,7 +53,7 @@ func GetPhoto(c *gin.Context) {
 		c.ShouldBind(&Photo)
 	}
 	Photo.UserID = id
-	temp, err := models.GetPhoto()
+	temp, err := models.GetPhoto(id)
 	for i, v := range temp {
 		item, err := models.GetItemByID(v.UserID)
 		if err != nil {

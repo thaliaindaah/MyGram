@@ -9,8 +9,8 @@ func CreateSocmed(socmed *SocialMedia) (err error) {
 	return nil
 }
 
-func GetSocmed() (out []SocialMedia, err error) {
-	err = database.DB.Find(&out).Error
+func GetSocmed(id int) (out []SocialMedia, err error) {
+	err = database.DB.Table("SocialMedia").Where("user_id = ?", id).Find(&out).Error
 	return
 }
 

@@ -12,8 +12,8 @@ func CreatePhoto(photo *Photo) (err error) {
 	return nil
 }
 
-func GetPhoto() (out []Photo, err error) {
-	err = database.DB.Find(&out).Error
+func GetPhoto(id int) (out []Photo, err error) {
+	err = database.DB.Table("Photo").Where("user_id = ?", id).Find(&out).Error
 	return
 }
 

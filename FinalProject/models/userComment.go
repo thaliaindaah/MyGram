@@ -11,8 +11,8 @@ func CreateComment(comment *Comment) (err error) {
 	return nil
 }
 
-func GetComment() (out []Comment, err error) {
-	err = database.DB.Find(&out).Error
+func GetComment(id int) (out []Comment, err error) {
+	err = database.DB.Table("Comment").Where("user_id = ?", id).Find(&out).Error
 	return
 }
 
