@@ -1,7 +1,6 @@
-# Hacktiv8 Projects
+# Hacktiv8 Final Projects
 
-This repository contains a collection of projects developed during my study at **Hacktiv8**.  
-Each project was created as part of assignments and final project throughout the program.
+This repository contains a final project developed during my study at **Hacktiv8**.
 
 ## 📌 Overview
 The projects in this repository demonstrate my learning progress and hands-on experience in Scalable Web Service with Golang
