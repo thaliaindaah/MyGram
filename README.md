@@ -1,4 +1,4 @@
-# Hacktiv8 Final Project
+# MyGram
 
 This repository contains a final project developed during my study at **Hacktiv8**.
 
