@@ -10,5 +10,5 @@ This project were developed for **learning purposes**.
 ## 📊 Project Score
 Here is the score result of this project:
 <p align="left">
-  <img src="Grade.png" width="327" height="350" />
+  <img src="Grade.png" width="237" height="350" />
 </p>
