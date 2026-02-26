@@ -9,5 +9,4 @@ This project were developed for **learning purposes**.
 
 ## 📊 Project Score
 Here is the score result of this project:
-
-!(https://github.com/thaliaindaah/MyGram/blob/main/Grade.png)
+![Preview](https://github.com/thaliaindaah/MyGram/blob/main/Grade.png)
